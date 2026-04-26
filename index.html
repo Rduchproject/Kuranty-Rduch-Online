@@ -1,55 +1,160 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <title>Kuranty</title>
+<meta charset="UTF-8">
+<title>Rduch Project</title>
 
-  <style>
-    button.sound-btn {
-      padding: 10px 16px;
-      margin: 6px;
-      border: none;
-      border-radius: 8px;
-      background: #444;
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+<style>
+body {
+  font-family: Arial;
+  background: #111;
+  color: white;
+  margin: 0;
+  padding: 20px;
+}
 
-    /* efekt świecenia */
-    button.sound-btn.playing {
-      background: #1e90ff;
-      box-shadow: 0 0 12px #1e90ff, 0 0 25px #1e90ff;
-    }
+/* START SCREEN */
+#startScreen {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-    #stopBtn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 15px 25px;
-      font-size: 18px;
-      background: red;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-  </style>
+#startBtn {
+  padding: 12px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* APP */
+#app {
+  display: none;
+}
+
+/* HOME BUTTON */
+#homeBtn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  padding: 10px 12px;
+  font-size: 20px;
+  border: none;
+  border-radius: 10px;
+  background: #333;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#homeBtn:hover {
+  background: #1e90ff;
+  box-shadow: 0 0 10px #1e90ff;
+}
+
+/* TABS */
+.tab-buttons {
+  margin-bottom: 20px;
+}
+
+.tab-buttons button {
+  padding: 10px 16px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #444;
+  color: white;
+}
+
+.tab-buttons button.active {
+  background: #1e90ff;
+  box-shadow: 0 0 10px #1e90ff;
+}
+
+/* CONTENT */
+.tab {
+  display: none;
+}
+
+.sound-btn {
+  padding: 10px 16px;
+  margin: 6px;
+  border: none;
+  border-radius: 8px;
+  background: #444;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sound-btn.playing {
+  background: #1e90ff;
+  box-shadow: 0 0 12px #1e90ff;
+}
+
+/* STOP */
+#stopBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  font-size: 18px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+</style>
 </head>
 
 <body>
 
-<h1 style="margin-top: 30px; font-size: 40px;">
-🔔 Kuranty Rduch Online
-</h1>
+<!-- START -->
+<div id="startScreen">
+  <h1>🔔 Witamy w Rduch Project</h1>
+  <button id="startBtn" onclick="startApp()">Wejdź</button>
+</div>
 
-<button class="sound-btn" onclick="playSound(this, 'kurant1.mp3')">
-Z dawna Polski Trąbki
-</button>
+<!-- APP -->
+<div id="app">
 
-<button class="sound-btn" onclick="playSound(this, 'kurant2.mp3')">
-Kiedy Ranne Trąbki
-</button>
+  <button id="homeBtn" onclick="goHome()">🏠</button>
+
+  <div class="tab-buttons">
+    <button class="active" onclick="openTab('trabki')">Trąbki</button>
+    <button onclick="openTab('dzwony')">Dzwony</button>
+  </div>
+
+  <!-- TRĄBKI -->
+  <div id="trabki" class="tab" style="display:block;">
+    <button class="sound-btn" onclick="playSound(this, 'kurant1.mp3')">
+      Z dawna Polski Trąbki
+    </button>
+
+    <button class="sound-btn" onclick="playSound(this, 'kurant2.mp3')">
+      Kiedy Ranne Trąbki
+    </button>
+  </div>
+
+  <!-- DZWONY -->
+  <div id="dzwony" class="tab">
+    <button class="sound-btn" onclick="playSound(this, 'dzwon1.mp3')">
+      Z dawna Polski Dzwony
+    </button>
+
+    <button class="sound-btn" onclick="playSound(this, 'dzwon2.mp3')">
+      Kiedy Ranne Dzwony
+    </button>
+  </div>
+
+</div>
 
 <button id="stopBtn" onclick="stopSound()">STOP</button>
 
@@ -57,27 +162,50 @@ Kiedy Ranne Trąbki
 let currentAudio = null;
 let currentBtn = null;
 
-function playSound(btn, file) {
-  // wyłącz poprzedni dźwięk
+function startApp() {
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("app").style.display = "block";
+}
+
+function goHome() {
   if (currentAudio) {
     currentAudio.pause();
     currentAudio.currentTime = 0;
   }
 
-  // usuń świecenie z poprzedniego przycisku
+  if (currentBtn) {
+    currentBtn.classList.remove("playing");
+    currentBtn = null;
+  }
+
+  document.getElementById("app").style.display = "none";
+  document.getElementById("startScreen").style.display = "flex";
+}
+
+function openTab(tab) {
+  document.querySelectorAll(".tab").forEach(t => t.style.display = "none");
+  document.getElementById(tab).style.display = "block";
+
+  document.querySelectorAll(".tab-buttons button").forEach(b => b.classList.remove("active"));
+  event.target.classList.add("active");
+}
+
+function playSound(btn, file) {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+  }
+
   if (currentBtn) {
     currentBtn.classList.remove("playing");
   }
 
-  // nowy dźwięk
   currentAudio = new Audio(file);
   currentAudio.play();
 
-  // ustaw nowy aktywny przycisk
   currentBtn = btn;
   currentBtn.classList.add("playing");
 
-  // gdy się skończy – usuń efekt
   currentAudio.onended = () => {
     currentBtn.classList.remove("playing");
     currentBtn = null;
