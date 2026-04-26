@@ -3,33 +3,85 @@
 <head>
   <meta charset="UTF-8">
   <title>Kuranty</title>
+
+  <style>
+    button.sound-btn {
+      padding: 10px 16px;
+      margin: 6px;
+      border: none;
+      border-radius: 8px;
+      background: #444;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    /* efekt świecenia */
+    button.sound-btn.playing {
+      background: #1e90ff;
+      box-shadow: 0 0 12px #1e90ff, 0 0 25px #1e90ff;
+    }
+
+    #stopBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      font-size: 18px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
 </head>
+
 <body>
 
 <h1 style="margin-top: 30px; font-size: 40px;">
 🔔 Kuranty Rduch Online
 </h1>
 
-<button onclick="playSound('kurant1.mp3')">Z dawna Polski Trąbki</button>
-<button onclick="playSound('kurant2.mp3')">Kiedy Ranne Trąbki</button>
+<button class="sound-btn" onclick="playSound(this, 'kurant1.mp3')">
+Z dawna Polski Trąbki
+</button>
 
-<audio id="k1" src="kurant1.mp3"></audio>
-<audio id="k1" src="kurant2.mp3"></audio>
+<button class="sound-btn" onclick="playSound(this, 'kurant2.mp3')">
+Kiedy Ranne Trąbki
+</button>
 
-</body>
-</html>
+<button id="stopBtn" onclick="stopSound()">STOP</button>
 
 <script>
 let currentAudio = null;
+let currentBtn = null;
 
-function playSound(file) {
+function playSound(btn, file) {
+  // wyłącz poprzedni dźwięk
   if (currentAudio) {
     currentAudio.pause();
     currentAudio.currentTime = 0;
   }
 
+  // usuń świecenie z poprzedniego przycisku
+  if (currentBtn) {
+    currentBtn.classList.remove("playing");
+  }
+
+  // nowy dźwięk
   currentAudio = new Audio(file);
   currentAudio.play();
+
+  // ustaw nowy aktywny przycisk
+  currentBtn = btn;
+  currentBtn.classList.add("playing");
+
+  // gdy się skończy – usuń efekt
+  currentAudio.onended = () => {
+    currentBtn.classList.remove("playing");
+    currentBtn = null;
+  };
 }
 
 function stopSound() {
@@ -37,22 +89,13 @@ function stopSound() {
     currentAudio.pause();
     currentAudio.currentTime = 0;
   }
+
+  if (currentBtn) {
+    currentBtn.classList.remove("playing");
+    currentBtn = null;
+  }
 }
 </script>
 
-<button id="stopBtn" onclick="stopSound()">STOP</button>
-
-<style>
-#stopBtn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 15px 25px;
-  font-size: 18px;
-  background: red;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-</style>
+</body>
+</html>
