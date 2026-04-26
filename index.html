@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Kuranty</title>
+</head>
+<body>
+
+<h1>🔔 Kuranty Rduch Online</h1>
+
+<button onclick="playSound('kurant1.mp3')">Z dawna Polski Trąbki</button>
+
+<audio id="k1" src="kurant1.mp3"></audio>
+
+</body>
+</html>
+
+<script>
+let currentAudio = null;
+
+function playSound(file) {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+  }
+
+  currentAudio = new Audio(file);
+  currentAudio.play();
+}
+
+function stopSound() {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+  }
+}
+</script>
+
+<button id="stopBtn" onclick="stopSound()">STOP</button>
+
+<style>
+#stopBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  font-size: 18px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+</style>
