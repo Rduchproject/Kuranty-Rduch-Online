@@ -37,15 +37,15 @@ body {
   display: none;
 }
 
-/* HOME BUTTON */
+/* HOME BUTTON (LEWY DOLNY RÓG) */
 #homeBtn {
   position: fixed;
-  top: 15px;
+  bottom: 15px;
   left: 15px;
-  padding: 10px 12px;
-  font-size: 20px;
+  padding: 12px 14px;
+  font-size: 22px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   background: #333;
   color: white;
   cursor: pointer;
@@ -54,7 +54,21 @@ body {
 
 #homeBtn:hover {
   background: #1e90ff;
-  box-shadow: 0 0 10px #1e90ff;
+  box-shadow: 0 0 12px #1e90ff;
+}
+
+/* STOP */
+#stopBtn {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  padding: 15px 25px;
+  font-size: 18px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 /* TABS */
@@ -97,20 +111,6 @@ body {
   background: #1e90ff;
   box-shadow: 0 0 12px #1e90ff;
 }
-
-/* STOP */
-#stopBtn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 15px 25px;
-  font-size: 18px;
-  background: red;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
 </style>
 </head>
 
@@ -126,6 +126,7 @@ body {
 <div id="app">
 
   <button id="homeBtn" onclick="goHome()">🏠</button>
+  <button id="stopBtn" onclick="stopSound()">STOP</button>
 
   <div class="tab-buttons">
     <button class="active" onclick="openTab('trabki')">Trąbki</button>
@@ -155,8 +156,6 @@ body {
   </div>
 
 </div>
-
-<button id="stopBtn" onclick="stopSound()">STOP</button>
 
 <script>
 let currentAudio = null;
